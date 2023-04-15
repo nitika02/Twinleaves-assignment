@@ -17,12 +17,12 @@ const ProductDetail = ({product}) => {
     const fassured = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/fa_62673a.png'
   return (
     <div>
-        <Typography variant="h3">{product.product}</Typography>
+        <Typography variant="h3">{product.name}</Typography>
             <Typography style={{marginTop: 5, color: "#878787", fontSize: 14}}>8 Ratings & 1 Reviews
                 <Box component="span"><img src={fassured} alt="" style={{width: 77, marginLeft: 20}}/></Box>
             </Typography>
             <Typography>
-            <Box component="span" style={{fontSize: 28}}>{product.price}</Box>&nbsp;&nbsp;&nbsp;
+            <Box component="span" style={{fontSize: 28}}></Box>&nbsp;&nbsp;&nbsp;
             </Typography>
             <Table>
             <TableBody>
@@ -39,7 +39,7 @@ const ProductDetail = ({product}) => {
                     <TableCell>
                         <Box component="span"  style={{color: "#2874f0"}}>SuperComNet</Box>
                         <Typography>GST invoice availabe</Typography>
-                        <Typography>View more sellers starting from {product.price}</Typography>
+                        <Typography>View more sellers starting from </Typography>
                     </TableCell>
                 </ColumnText>
                 <ColumnText>
@@ -49,7 +49,7 @@ const ProductDetail = ({product}) => {
                 </ColumnText>
                 <ColumnText>
                     <TableCell style={{color: "#878787"}}>Description</TableCell>
-                    <TableCell>{product.details}</TableCell>
+                    <TableCell>{product.description}</TableCell>
                 </ColumnText>
             </TableBody>
         </Table>

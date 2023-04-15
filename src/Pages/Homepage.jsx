@@ -28,43 +28,49 @@ const Homepage = () => {
 
     useEffect(() => {
         getProducts()
-    }, [page, filter])
+    }, [page])
 
+    // const filteredData = filter
+    // ? products.filter(item => filter === '' || item.main_category === filter)
+    // : data;
     const filteredData = filter
-    ? products.filter(item => item.main_category === filter)
-    : data;
+        ? products.filter(item => item.main_category === filter)
+        : products;
+        // console.log('filter:', filter);
+        // console.log('filteredData:', filteredData);
 
     const columns = [
         {field: "id", headerName: "ID", width: 90},
         {field: "photoURL", headerName: "Image", width: 150, renderCell: (params) => {
             return <img src={params.value} alt="" style={{width: 50, height: 50}} />;
         }},
-        {field: "product", headerName: "Product", width: 350},
-        {field: "price", headerName: "Price", width: 150},
-        {field: "details", headerName: "Description", width: 250}
+        {field: "name", headerName: "Product", width: 350},
+        {field: "mrp", headerName: "Price", width: 150},
+        {field: "description", headerName: "Description", width: 250}
     ]
 
     const rows = filteredData.map((row, index) => ({
         id: index+1,
         photoURL: `${row.images.front !== null ? row.images.front : row.gs1_images.front}`,
-        product: `${row.name} ${row.company_detail.name}`,
-        price: `Rs. ${row.mrp.mrp}`,
-        details: row.description
+        name: `${row.name} ${row.company_detail.name}`,
+        mrp: `Rs. ${row.mrp.mrp}`,
+        description: row.description
     }))
     
     const sortLtoH = () => {
-        const sorted = products.sort((a, b) => a.mrp.mrp - b.mrp.mrp)
+        const sorted = [...filteredData].sort((a, b) => a.mrp.mrp - b.mrp.mrp)
         console.log(products.map((row) => console.log(typeof row.mrp.mrp)))
         setProducts(sorted)
     }
     const sortHtoL = () => {
-        const sortedl = products.sort((a, b) => b.mrp.mrp - a.mrp.mrp)
+        const sortedl = [...filteredData].sort((a, b) => b.mrp.mrp - a.mrp.mrp)
         setProducts(sortedl)
     }
 
     const handleRowClick = (params) => {
-        navigate(`${params.row.product}`)
-        localStorage.setItem("Single", JSON.stringify(params.row))
+        console.log(params.row)
+        navigate(`${params.row.name}`)
+        localStorage.setItem("SingleProduct", JSON.stringify(params.row))
       };
 
       const handlePage = () => {
@@ -98,7 +104,7 @@ const Homepage = () => {
             <p onClick={sortHtoL}>Price -- High to Low</p>
         </div>
         <div style={{marginBottom: "30px"}}>
-            <label for="category">Filter by Category</label>
+            <label htmlFor="category">Filter by Category</label>
             <select name="category" id="category" onChange={handleCategoryChange} value={filter}>
                 <option value="">All</option>
                 <option value="Bakery, Cakes & Dairy">Bakery, Cakes & Dairy</option>

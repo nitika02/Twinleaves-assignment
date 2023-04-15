@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import { InputBase, styled, List, ListItem, ListItemText, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SearchContainer = styled(Box)`
     background: #fff;
@@ -44,21 +44,26 @@ const ListWrapper = styled(List)`
 const Navbar = () => {
   const [text, setText] = useState()
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const getProducts = async () => {
-    const res = await fetch(`https://catalog-management-system-kxyaws5ixa-uc.a.run.app/cms/products}`)
+    const res = await fetch(`https://catalog-management-system-kxyaws5ixa-uc.a.run.app/cms/products`)
     const data = await res.json();
     setProducts(data.products)
 }
 
 useEffect(() => {
     getProducts()
-}, [])
+}, [text])
 
-  const getText = (text) => {
-    setText(text)
-    console.log(text)
-}
+const handleTextChange = (text) => {
+  setText(text);
+  const filtered = products.filter((product) =>
+    product.name.toLowerCase().includes(text.toLowerCase())
+  );
+  setFilteredProducts(filtered);
+};
+const navigate = useNavigate()
   return (
     <div>
         <Box
@@ -73,11 +78,11 @@ useEffect(() => {
             }}
         >
           <Container>
-            <Link to="/"><Typography variant="h3">Grocery Store</Typography></Link>
+            <Link to="/"><Typography variant="h3" color="white">Grocery Store</Typography></Link>
             <SearchContainer>
                 <InputSearchBase 
                 placeholder='Search for products, Brands and more'
-                onChange={(e) => getText(e.target.value)}
+                onChange={(e) => handleTextChange(e.target.value)}
                 value={text}
             />
                 <SearchIconWrapper>
@@ -86,19 +91,22 @@ useEffect(() => {
                 {
             text && 
                 <ListWrapper>
-                    {
-                        products.filter(product => product.name.toLowerCase().includes(text.toLowerCase())).map(product => (
-                            <ListItem>
-                                <Link to={`/${product}`}
-                                onClick={() => setText("")}
-                                style={{textDecoration: "none", color: "inherit"}}
-                                >
-                                    {product.name}
-                                </Link>
-                            </ListItem>
-                        ))
-                        
-                    }
+                    {filteredProducts.map((product) => ([
+                      <ListItem
+            
+                          onClick={() => {
+                            console.log(typeof product)
+                            navigate(`${product.name} ${product.company_detail.name}`)
+                            setText("")
+                            localStorage.setItem("SingleProduct", JSON.stringify(product))
+                          }}
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          {product.name}
+                          {/* <div>{product.someInnerObject.mrp}</div> */}
+                       
+                      </ListItem>
+                    ]))}
                 </ListWrapper>
         }
             </SearchContainer>

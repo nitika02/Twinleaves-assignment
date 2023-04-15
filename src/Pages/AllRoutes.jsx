@@ -6,6 +6,7 @@ import {ErrorBoundary} from "react-error-boundary"
 import FallbackRender from '../Components/ErrorBoundary'
 import GoToTop from '../Components/GoToTop/GoToTop'
 
+
 const Homepage = lazy(() => import('./Homepage'))
 const SingleProduct = lazy(() => import('./SingleProduct'))
 

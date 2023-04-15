@@ -26,7 +26,7 @@ const RightContainer = styled(Grid)`
 `
 
 const SingleProduct = () => {
-  const product = JSON.parse(localStorage.getItem("Single"))
+  const product = JSON.parse(localStorage.getItem("SingleProduct"))
   console.log(product)
   return (
     <Component>
